@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { fetchNewsThunk } from "./actions/fetchNews";
 
 const initialState = {
     newsLoading: false,
@@ -27,6 +28,23 @@ const NewsSlice = createSlice({
             state.newsError = payload.message;
         },
     },
+    extraReducers: (builder) => {
+        builder.addCase(fetchNewsThunk.pending, (state) => {
+            state.newsLoading = true;
+        })
+        builder.addCase(fetchNewsThunk.fulfilled, (state, { payload }) => {
+            console.log(payload, "==>> payload")
+            state.newsLoading = false;
+            state.newsData = payload.data;
+            state.newsCount = payload.count;
+            state.newsError = "";
+        })
+        builder.addCase(fetchNewsThunk.rejected, (state, { payload }) => {
+            state.newsLoading = false;
+            state.newsData = [];
+            state.newsError = payload.message;
+        })
+    }
 });
 
 const { reducer, actions } = NewsSlice;

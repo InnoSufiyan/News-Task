@@ -1,2 +1,7 @@
 export const newsApiUrl = 'https://newsapi.org/v2';
 export const newsApiKey = '14f52e8b3fdd4fa7a8bf829c68c63a7d';
+export const newyorkApiUrl = 'https://api.nytimes.com/svc';
+export const newyorkApiKey = 'EaFvqQfWAX3NXw9W7wipfsuGqGGMIsyt';
+export const guardianApiUrl = 'https://content.guardianapis.com';
+export const guardianApiKey = 'a79becbb-0954-40b5-87e5-6507fa1115b6';
+

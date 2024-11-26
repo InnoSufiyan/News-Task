@@ -1,7 +1,6 @@
 import axios from "axios";
-import { newsApiUrl } from "../config/constant";
 
-export const getMethod = async (relativesUrl, params = {}) => {
+export const getMethod = async (newsApiUrl, relativesUrl, params = {}) => {
     try {
         const response = axios.get(`${newsApiUrl}/${relativesUrl}`, { params })
         return response;

@@ -1,27 +1,31 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Search, Menu as MenuIcon, X } from "lucide-react";
 import NotificationDropdown from "./NotificationDropdown";
 import ProfileDropdown from "./ProfileDropdown";
 import { debounce } from "../utils/debounce.js";
+import { useDispatch } from "react-redux";
+import { setSearchQuery } from "../redux/reducers/filterSlice.js";
+import { fetchNewsThunk } from "../redux/reducers/actions/fetchNews.js";
+import toast from "react-hot-toast";
 
 const Header = ({
-  onSearch,
   toggleSidebar,
   isSidebarOpen,
 }) => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useDispatch()
+  const [search, setSearch] = useState("");
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
     debounce((query) => {
-      onSearch(query);
+      dispatch(setSearchQuery(query))
+      dispatch(fetchNewsThunk()).unwrap().catch(() => toast.error("Failed to fetch news"))
     }, 2000),
-    [onSearch]
+    []
   );
 
   const handleSearchChange = (e) => {
     const query = e.target.value;
-    setSearchQuery(query);
+    setSearch(query);
     debouncedSearch(query);
   };
 
@@ -49,7 +53,7 @@ const Header = ({
             <div className="relative z-10">
               <input
                 type="text"
-                value={searchQuery}
+                value={search}
                 onChange={handleSearchChange}
                 placeholder="Search news..."
                 className="w-full px-4 py-2 pl-10 pr-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -69,7 +73,7 @@ const Header = ({
           <div className="relative">
             <input
               type="text"
-              value={searchQuery}
+              value={search}
               onChange={handleSearchChange}
               placeholder="Search news..."
               className="w-full px-4 py-2 pl-10 pr-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
